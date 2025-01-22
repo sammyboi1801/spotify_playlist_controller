@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "spotify_playlist_controller/wsgi.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "30mb",
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "src": "build.sh",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "staticfiles"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "spotify_playlist_controller/wsgi.py"
+    }
+  ],
+  "outputDirectory": "staticfiles"
+}
