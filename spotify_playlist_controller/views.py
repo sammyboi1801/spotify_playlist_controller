@@ -11,7 +11,7 @@ scope_modify = "playlist-modify-public"
 
 auth_manager = SpotifyOAuth(client_id=os.environ.get("SPOTIPY_CLIENT_ID"),
                                 client_secret=os.environ.get("SPOTIPY_CLIENT_SECRET"),
-                                redirect_uri=os.environ.get("SPOTIPY_REDIRECT_URI"), scope=scope_modify, open_browser=False)
+                                redirect_uri=os.environ.get("SPOTIPY_REDIRECT_URI"), scope=scope_modify, open_browser=True)
 sp = spotipy.Spotify(auth_manager=auth_manager)
 
 current_playlist_name = f"{sp.playlist(os.environ.get("PLAYLIST_ID"))['name']}"
