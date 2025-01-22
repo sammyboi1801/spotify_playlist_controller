@@ -9,27 +9,27 @@ load_dotenv()
 
 scope_modify = "playlist-modify-public"
 
-auth_manager = SpotifyOAuth(client_id=process.env.SPOTIPY_CLIENT_ID,
-                                client_secret=process.env.SPOTIPY_CLIENT_SECRET,
-                                redirect_uri=process.env.SPOTIPY_REDIRECT_URI, scope=scope_modify, open_browser=False)
+auth_manager = SpotifyOAuth(client_id=os.environ.get("SPOTIPY_CLIENT_ID"),
+                                client_secret=os.environ.get("SPOTIPY_CLIENT_SECRET"),
+                                redirect_uri=os.environ.get("SPOTIPY_REDIRECT_URI"), scope=scope_modify, open_browser=False)
 sp = spotipy.Spotify(auth_manager=auth_manager)
 
-current_playlist_name = f"{sp.playlist(process.env.PLAYLIST_ID)['name']}"
+current_playlist_name = f"{sp.playlist(os.environ.get("PLAYLIST_ID"))['name']}"
 
 def home(request):
     request.session.modified = True
     message = ""
 
-    current_playlist_name = f"{sp.playlist(process.env.PLAYLIST_ID)['name']}"
+    current_playlist_name = f"{sp.playlist(os.environ.get("PLAYLIST_ID"))['name']}"
     if request.method == 'POST':
         if 'updated_playlist_name' in request.POST:
             update_name =request.POST['updated_playlist_name']
             password = request.POST['password']
 
-            if password==process.env.PASSWORD and update_name is not None:
-                sp.playlist_change_details(playlist_id=process.env.PLAYLIST_ID, name=update_name)
+            if password==os.environ.get("PASSWORD") and update_name is not None:
+                sp.playlist_change_details(playlist_id=os.environ.get("PLAYLIST_ID"), name=update_name)
                 message = "Playlist name updated!"
-                current_playlist_name = f"{sp.playlist(process.env.PLAYLIST_ID)['name']}"
+                current_playlist_name = f"{sp.playlist(os.environ.get("PLAYLIST_ID"))['name']}"
             else:
                 message = "Wrong password!"
     update_name = ""
